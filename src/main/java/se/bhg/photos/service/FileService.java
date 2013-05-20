@@ -1,9 +1,7 @@
 package se.bhg.photos.service;
 
-import se.bhg.photos.model.FileType;
-import se.bhg.photos.model.PhotoFile;
+import se.bhg.photos.model.Photo;
 
 public interface FileService {
-	void writeFile(PhotoFile photoFile);
-	FileType determinFileType(byte[] data);
+	void writeFile(Photo photo, byte[] data);
 }

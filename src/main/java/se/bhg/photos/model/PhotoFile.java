@@ -4,6 +4,13 @@ public class PhotoFile {
 	private byte[] data;
 	private String path;
 	private String fileName;
+	
+	public PhotoFile(byte[] data, String path, String filename) {
+	    this.data = data;
+	    this.path = path;
+	    this.fileName = filename;
+	}
+	
 	public byte[] getData() {
 		return data;
 	}
