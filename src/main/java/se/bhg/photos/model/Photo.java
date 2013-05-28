@@ -5,10 +5,12 @@ import org.joda.time.DateTime;
 import com.drew.metadata.Metadata;
 
 public class Photo {
+	private String uuid;
 	private FileType fileType;
 	private String uploader;
 	private String filename;
 	private String originalFilename;
+	private String path;
 	private Metadata metadata;
 	private DateTime uploaded;
 	private DateTime shot;
@@ -68,6 +70,16 @@ public class Photo {
     public void setShot(DateTime shot) {
         this.shot = shot;
     }
-	
-	
+	public String getPath() {
+		return path;
+	}
+	public void setPath(String path) {
+		this.path = path;
+	}
+	public String getUuid() {
+		return uuid;
+	}
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
 }
