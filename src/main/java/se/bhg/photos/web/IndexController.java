@@ -64,7 +64,7 @@ public class IndexController {
                    int fileSize = (int) mfile.getSize();
                    byte[] fileContent = new byte[fileSize];
                    fileContent = mfile.getBytes();
-                   photoSerivce.addPhoto(filename, fileContent, "fredrik");                 
+                   photoSerivce.addPhoto(filename, fileContent, "fredrik", uuid);                 
                    break;
                 }
            } else {

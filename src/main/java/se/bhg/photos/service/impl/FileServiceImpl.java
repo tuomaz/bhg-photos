@@ -22,27 +22,31 @@ import se.bhg.photos.service.FileService;
 @Service
 public class FileServiceImpl implements FileService {
     private static final Logger LOG = LoggerFactory.getLogger(FileServiceImpl.class);
+    private static final String SEPARATOR = java.nio.file.FileSystems.getDefault().getSeparator();
     @Value("${photos.store.path}")
     private String basePath;
 
     @Override
     public void writeFile(Photo photo, byte[] data) {
-        String separator = java.nio.file.FileSystems.getDefault().getSeparator();
+        
         String normalizedFilename = normalizeFilename(photo.getOriginalFilename());
         String fileSuffix = determineFileType(data).toString();
         photo.setFilename(normalizedFilename + "." + fileSuffix);
         
         StringBuffer finalPath = new StringBuffer();
         finalPath.append(basePath);
-        finalPath.append(separator);
+        finalPath.append(SEPARATOR);
         finalPath.append(getPath(photo));
-        finalPath.append(separator);
+        finalPath.append(SEPARATOR);
         finalPath.append(photo.getUploader());
-        finalPath.append(separator);
+        finalPath.append(SEPARATOR);
         finalPath.append(normalizedFilename);
         finalPath.append(".");
         finalPath.append(fileSuffix);
         File file = new File(finalPath.toString());
+        
+        photo.setPath(finalPath.toString());
+        
         LOG.debug("Full path is {}", file.getAbsolutePath());
 
         if (file.isFile()) {
@@ -85,9 +89,14 @@ public class FileServiceImpl implements FileService {
     }
 
     private String getPath(Photo photo) {
-    	String s = java.nio.file.FileSystems.getDefault().getSeparator();
     	DateTime dt = new DateTime();
-    	DateTimeFormatter fmt = DateTimeFormat.forPattern("YYYY" + s + "MM" + s + "dd");	
+    	DateTimeFormatter fmt = DateTimeFormat.forPattern("YYYY" + SEPARATOR + "MM" + SEPARATOR + "dd");	
         return fmt.print(dt);
     }
+
+	@Override
+	public byte[] readFile(String path) throws IOException {
+		File file = new File(path);
+		return FileUtils.readFileToByteArray(file);
+	}
 }
