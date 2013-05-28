@@ -113,6 +113,12 @@
         </exclusion>
       </exclusions>
     </dependency>
+    
+    <dependency>
+    <groupId>com.mortennobel</groupId>
+    <artifactId>java-image-scaling</artifactId>
+    <version>0.8.5</version>
+	</dependency>
   </dependencies>
 
   <!-- all Maven plugin versions are mentioned in order to guarantee the build reproducibility in the long term -->
