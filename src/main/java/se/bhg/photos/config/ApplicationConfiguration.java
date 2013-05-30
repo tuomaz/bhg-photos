@@ -23,7 +23,7 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
     @Bean
     public static PropertyPlaceholderConfigurer properties(Environment env) {
         PropertyPlaceholderConfigurer ppc = new PropertyPlaceholderConfigurer();
-        ppc.setLocations(new ClassPathResource[] { new ClassPathResource("conf/" + env.getProperty("spring.profiles.active") + ".properties"), });
+        ppc.setLocations(new ClassPathResource[] { new ClassPathResource("photos-" + env.getProperty("spring.profiles.active") + ".properties"), });
         ppc.setIgnoreResourceNotFound(true);
         return ppc;
     }
