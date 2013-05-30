@@ -121,8 +121,13 @@
       <artifactId>filters</artifactId>
       <version>2.0.235-1</version>
     </dependency>
+    <dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-databind</artifactId>
+    <version>2.2.2</version>
+   </dependency>
   </dependencies>
-
+  
   <!-- all Maven plugin versions are mentioned in order to guarantee the build reproducibility in the long term -->
   <build>
     <defaultGoal>install</defaultGoal>

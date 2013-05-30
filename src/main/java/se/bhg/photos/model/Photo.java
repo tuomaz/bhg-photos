@@ -1,19 +1,24 @@
 package se.bhg.photos.model;
 
+import java.util.Date;
+
+import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
+import org.springframework.data.annotation.Id;
 
 import com.drew.metadata.Metadata;
 
 public class Photo {
-	private String uuid;
+    @Id
+	private ObjectId id;
 	private FileType fileType;
 	private String uploader;
 	private String filename;
 	private String originalFilename;
 	private String path;
 	private Metadata metadata;
-	private DateTime uploaded;
-	private DateTime shot;
+	private Date uploaded;
+	private Date shot;
 	private long checksum;
 	
 	public long getChecksum() {
@@ -58,16 +63,16 @@ public class Photo {
     public void setOriginalFilename(String originalFilename) {
         this.originalFilename = originalFilename;
     }
-    public DateTime getUploaded() {
+    public Date getUploaded() {
         return uploaded;
     }
-    public void setUploaded(DateTime uploaded) {
+    public void setUploaded(Date uploaded) {
         this.uploaded = uploaded;
     }
-    public DateTime getShot() {
+    public Date getShot() {
         return shot;
     }
-    public void setShot(DateTime shot) {
+    public void setShot(Date shot) {
         this.shot = shot;
     }
 	public String getPath() {
@@ -76,10 +81,10 @@ public class Photo {
 	public void setPath(String path) {
 		this.path = path;
 	}
-	public String getUuid() {
-		return uuid;
+	public ObjectId getId() {
+		return id;
 	}
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
+	public void setId(ObjectId id) {
+		this.id = id;
 	}
 }

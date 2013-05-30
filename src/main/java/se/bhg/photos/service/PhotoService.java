@@ -7,6 +7,6 @@ import se.bhg.photos.model.Photo;
 import com.drew.imaging.ImageProcessingException;
 
 public interface PhotoService {
-	void addPhoto(String originalFilename, byte[] binaryData, String uploader, String uuid) throws ImageProcessingException, IOException;
+	Photo addPhoto(String originalFilename, byte[] binaryData, String uploader, String uuid) throws ImageProcessingException, IOException;
 	Photo getPhoto(String id);
 }

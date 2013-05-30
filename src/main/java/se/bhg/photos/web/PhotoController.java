@@ -38,9 +38,9 @@ public class PhotoController {
     PhotoService photoService;
 
     @ResponseBody
-    @RequestMapping(value = "/photo/{uuid}/{x}/{y}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
-    public byte[] getPhoto(@PathVariable String uuid, @PathVariable int x, @PathVariable int y) throws IOException {
-        Photo photo = photoService.getPhoto(uuid);
+    @RequestMapping(value = "/photo/{id}/{x}/{y}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+    public byte[] getPhoto(@PathVariable String id, @PathVariable int x, @PathVariable int y) throws IOException {
+        Photo photo = photoService.getPhoto(id);
 
         if (photo == null) {
             return null;

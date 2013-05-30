@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
+import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
+import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 import com.mongodb.MongoClient;
@@ -17,19 +19,19 @@ public class MongoConfiguration {
 
     @Value("${mongo.host}")
     private String mongoURL;
-
     @Value("${mongo.db}")
     private String mongoDB;
-    
+
     @Value("${mongo.user}")
     private String mongoUser;
-    
+
     @Value("${mongo.password}")
     private String mongoPassword;
 
     private MongoDbFactory mongoDbFactory() throws Exception {
-        //MongoClientOptions mongoOptions = MongoClientOptions.builder().connectionsPerHost(200).build();
-        
+        // MongoClientOptions mongoOptions =
+        // MongoClientOptions.builder().connectionsPerHost(200).build();
+
         MongoClient mongo = null;
         mongo = new MongoClient(mongoURL);
         return new SimpleMongoDbFactory(mongo, mongoDB);
@@ -37,9 +39,10 @@ public class MongoConfiguration {
 
     @Bean
     public MongoTemplate mongoTemplate() throws Exception {
-        MongoTemplate mongoTemplate = new MongoTemplate(mongoDbFactory());
-        mongoTemplate.setWriteConcern(WriteConcern.NORMAL);
+        MappingMongoConverter converter =  new MappingMongoConverter(mongoDbFactory(), new MongoMappingContext());
+        //converter.setMapKeyDotReplacement("|");
+        MongoTemplate mongoTemplate = new MongoTemplate(mongoDbFactory(), converter);
+        mongoTemplate.setWriteConcern(WriteConcern.SAFE);
         return mongoTemplate;
     }
-
 }

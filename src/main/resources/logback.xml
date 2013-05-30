@@ -14,11 +14,10 @@
         </encoder>
     </appender>
 
-	<!--<logger name="org.hibernate" level="debug"/> -->
     <logger name="se.bhg" level="debug"/>
-    <logger name="org.thymeleaf" level="warn"/>
+    <logger name="org.thymeleaf" level="error"/>
          
-    <root level="info">
+    <root level="debug">
         <appender-ref ref="console"/>
     </root>
 </configuration>
