@@ -1,6 +1,7 @@
 package se.bhg.photos.config;
 
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -37,7 +38,7 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
     @Bean
     public MultipartResolver multipartResolver() {
         CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver();
-        commonsMultipartResolver.setMaxUploadSize(10000000);
+        commonsMultipartResolver.setMaxUploadSize(100000000);
         return commonsMultipartResolver;
     }
 
