@@ -32,6 +32,11 @@ public class IndexController {
     @Autowired
     PhotoService photoSerivce;
 
+    @RequestMapping("/")
+    public String first() {
+        return "index";
+    }
+    
     @RequestMapping("/index")
     public String index() {
         return "index";
