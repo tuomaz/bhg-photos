@@ -7,7 +7,7 @@ $(document).ready(function() {
 	            customHeaders: { Accept: 'application/json' }
 	          },
 	          text: {
-	            uploadButton: '<div><i class="icon-upload icon-white"></i> Test me now and upload a file</div>'
+	            uploadButton: '<div><i class="icon-upload icon-white"></i>Tryck här för att ladda upp filer</div>'
 	          },
 	          template: '<div class="qq-uploader span12">' +
 	                      '<pre class="qq-upload-drop-area span12"><span>{dragZoneText}</span></pre>' +

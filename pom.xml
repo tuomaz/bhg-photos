@@ -14,9 +14,9 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
     <!-- Spring -->
-    <spring-framework.version>3.2.2.RELEASE</spring-framework.version>
-    <spring.data.mongodb.version>1.2.1.RELEASE</spring.data.mongodb.version>
-    <thymeleaf-spring3.version>2.0.16</thymeleaf-spring3.version>
+    <spring-framework.version>3.2.4.RELEASE</spring-framework.version>
+    <spring.data.mongodb.version>1.2.3.RELEASE</spring.data.mongodb.version>
+    <thymeleaf-spring3.version>2.0.18</thymeleaf-spring3.version>
 
     <!-- Logging -->
     <logback.version>1.0.13</logback.version>
@@ -27,12 +27,12 @@
   </properties>
 
   <dependencies>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>3.0.1</version>
-            <scope>provided</scope>
-        </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>3.0.1</version>
+      <scope>provided</scope>
+    </dependency>
     <!-- SPRING, SPRING, SPRINGITY SPRING -->
     <dependency>
       <groupId>org.springframework</groupId>
@@ -122,12 +122,22 @@
       <version>2.0.235-1</version>
     </dependency>
     <dependency>
-    <groupId>com.fasterxml.jackson.core</groupId>
-    <artifactId>jackson-databind</artifactId>
-    <version>2.2.2</version>
-   </dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.2.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.1</version>
+    </dependency>
+    <dependency>
+      <groupId>net.sf.ehcache</groupId>
+      <artifactId>ehcache</artifactId>
+      <version>2.7.0</version>
+    </dependency>
   </dependencies>
-  
+
   <!-- all Maven plugin versions are mentioned in order to guarantee the build reproducibility in the long term -->
   <build>
     <defaultGoal>install</defaultGoal>

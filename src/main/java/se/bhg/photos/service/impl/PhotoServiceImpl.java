@@ -20,6 +20,7 @@ import com.drew.metadata.Metadata;
 import com.drew.metadata.Tag;
 
 import se.bhg.photos.model.Photo;
+import se.bhg.photos.model.PhotoStatus;
 import se.bhg.photos.service.FileService;
 import se.bhg.photos.service.MetadataService;
 import se.bhg.photos.service.PhotoService;
@@ -46,6 +47,8 @@ public class PhotoServiceImpl implements PhotoService {
         Metadata metadata = metadataService.getMetaData(bis);
 
         Photo photo = new Photo();
+        photo.setId(new ObjectId());
+        photo.setStatus(PhotoStatus.PROCESSING);
         photo.setOriginalFilename(originalFilename);
         photo.setChecksum(getCRC32(binaryData));
         photo.setId(new ObjectId());
