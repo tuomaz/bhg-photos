@@ -2,6 +2,15 @@
 <html lang="sv">
 <head th:substituteby="head :: head"></head>
   <body>
+  <div id="blueimp-gallery" class="blueimp-gallery">
+    <div class="slides"></div>
+    <h3 class="title"></h3>
+    <a class="prev">‹</a>
+    <a class="next">›</a>
+    <a class="close">×</a>
+    <a class="play-pause"></a>
+    <ol class="indicator"></ol>
+</div>
         <div class="container">
 <nav class="navbar navbar-default" role="navigation">
   <!-- Brand and toggle get grouped for better mobile display -->
@@ -18,8 +27,8 @@
   <!-- Collect the nav links, forms, and other content for toggling -->
   <div class="collapse navbar-collapse navbar-ex1-collapse">
     <ul class="nav navbar-nav">
-      <li class="active"><a href="photos">Bläddra</a></li>
-      <li><a href="index">Ladda upp</a></li>
+      <li class="active"><a href="photos">Bilder!</a></li>
+      <li><a href="#">Link</a></li>
       <li class="dropdown">
       </li>
     </ul>
@@ -28,28 +37,37 @@
       <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Inställningar <b class="caret"></b></a>
         <ul class="dropdown-menu">
-          <li><a href="#">Action</a></li>
-          <li><a href="#">Another action</a></li>
-          <li><a href="#">Something else here</a></li>
-          <li><a href="#">Separated link</a></li>
+            <li class="active"><a href="photos">Bläddra</a></li>
+            <li><a href="index">Ladda upp</a></li>
         </ul>
       </li>
     </ul>
   </div><!-- /.navbar-collapse -->
 </nav>  
+      
+    <div id="links">
+        <a th:each="photo : ${photos}" th:href="${'/bhg-photos/photo/' + photo.id + '/1200'}" th:title="${photo.filename}">
+            <img class="img-thumbnail" th:src="${'/bhg-photos/photo/' + photo.id + '/250'}" th:alt="${photo.filename}"/>
+        </a>
+    </div>      
 
-      <h1>Här laddar du upp bilder till vårt gemensamma fotoalbum</h1>
-      <div id="fine-uploader"></div>
-      <div id="thumbnails"></div>
       
     </div> <!-- /container -->
-
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
-    <script src="assets/js/jquery.fineuploader-3.6.0.min.js"></script>
-    <script src="assets/js/upload.js"></script>
+    <script src="assets/js/blueimp-gallery.min.js"></script>
+    <script>
+document.getElementById('links').onclick = function (event) {
+    event = event || window.event;
+    var target = event.target || event.srcElement,
+        link = target.src ? target.parentNode : target,
+        options = {index: link, event: event},
+        links = this.getElementsByTagName('a');
+    blueimp.Gallery(links, options);
+};
+</script>
     </body>
 </html>

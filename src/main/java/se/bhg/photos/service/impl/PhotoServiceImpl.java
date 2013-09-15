@@ -69,6 +69,10 @@ public class PhotoServiceImpl implements PhotoService {
     public Photo getPhoto(String id) {
         return photoRepository.findOne(id);
     }
+    
+    public Iterable<Photo> getPhotos() {
+        return photoRepository.findAll();
+    }
 
     private long getCRC32(byte[] data) {
         Checksum checksum = new CRC32();

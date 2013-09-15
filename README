@@ -1,1 +1,5 @@
 The plan is to make this a web photo gallery.
+
+To run:
+
+mvn -Dserver -DXmx4096m -DXms512m -Dspring.profiles.active=shiprock clean install tomcat7:run

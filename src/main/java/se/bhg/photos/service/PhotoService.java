@@ -9,4 +9,5 @@ import com.drew.imaging.ImageProcessingException;
 public interface PhotoService {
 	Photo addPhoto(String originalFilename, byte[] binaryData, String uploader, String uuid) throws ImageProcessingException, IOException;
 	Photo getPhoto(String id);
+	Iterable<Photo> getPhotos();
 }
