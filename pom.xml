@@ -26,6 +26,17 @@
     <ehcache.version>2.6.5</ehcache.version>
   </properties>
 
+<repositories>
+    <repository>
+        <id>spring-milestones</id>
+        <name>Spring Milestones</name>
+        <url>http://repo.spring.io/milestone</url>
+        <snapshots>
+            <enabled>false</enabled>
+        </snapshots>
+    </repository>
+</repositories>
+
   <dependencies>
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -71,6 +82,16 @@
       <version>${spring.data.mongodb.version}</version>
     </dependency>
 
+    <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-web</artifactId>
+        <version>3.2.0.RC1</version>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-config</artifactId>
+        <version>3.2.0.RC1</version>
+    </dependency>
 
     <dependency>
       <groupId>commons-fileupload</groupId>
