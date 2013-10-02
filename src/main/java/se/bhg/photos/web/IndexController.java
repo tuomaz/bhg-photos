@@ -47,7 +47,7 @@ public class IndexController {
         return "upload";
     }
     
-    @RequestMapping()
+    @RequestMapping("/login")
     public String login() {
     	return "login";
     }

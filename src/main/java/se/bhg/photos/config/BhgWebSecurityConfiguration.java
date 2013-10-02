@@ -3,6 +3,7 @@ package se.bhg.photos.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -15,28 +16,39 @@ import se.bhg.photos.util.PhpBB3AuthenticationProvider;
 @EnableWebSecurity
 @Import({ApplicationConfiguration.class})
 public class BhgWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
-	@Autowired
-	PhpBB3AuthenticationProvider phpBB3AuthenticationProvider;
-	
+    private final static String PROD_ENV = "yankton";
+    @Autowired
+    PhpBB3AuthenticationProvider phpBB3AuthenticationProvider;
+
+    @Autowired
+    Environment env;
+
     @Override
     protected void registerAuthentication(AuthenticationManagerBuilder auth) throws Exception {
-        //auth.inMemoryAuthentication().withUser("user").password("password").roles("USER");
-    	auth.authenticationProvider(phpBB3AuthenticationProvider);
+        if (env.getActiveProfiles().length == 1 && PROD_ENV.equalsIgnoreCase(env.getActiveProfiles()[0])) {
+            auth.authenticationProvider(phpBB3AuthenticationProvider);
+            System.out.println("=============================================");
+            System.out.println("PROD");
+        } else {
+            auth.inMemoryAuthentication().withUser("user").password("password").roles("USER");
+            System.out.println("=============================================");
+            System.out.println("OTHER");
+        }
     }
-    
+
     @Override
     public void configure(WebSecurity web) throws Exception {
       web
         .ignoring()
-           .antMatchers("/assets/**"); // #3
+          .antMatchers("/assets/**"); // #3
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-    	http
-        .authorizeRequests()
-          /*.antMatchers("/signup","/about").permitAll()
-          .antMatchers("/admin/**").hasRole("ADMIN") */
+        http
+          .csrf()
+            .disable()
+         .authorizeRequests()
           .anyRequest().authenticated() // 7
           .and()
       .formLogin()  // #8
