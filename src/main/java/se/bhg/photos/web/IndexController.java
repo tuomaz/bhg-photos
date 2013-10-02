@@ -46,6 +46,11 @@ public class IndexController {
     public String upload() {
         return "upload";
     }
+    
+    @RequestMapping()
+    public String login() {
+    	return "login";
+    }
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST, params = "qquuid")
     @ResponseBody

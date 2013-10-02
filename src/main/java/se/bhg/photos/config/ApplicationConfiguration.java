@@ -1,5 +1,8 @@
 package se.bhg.photos.config;
 
+import javax.sql.DataSource;
+
+import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -7,6 +10,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
@@ -68,5 +73,26 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
         thymeleafViewResolver.setTemplateEngine(templateEngine());
         thymeleafViewResolver.setCharacterEncoding("UTF-8");
         return thymeleafViewResolver;
+    }
+    
+    @Bean
+    public DataSource dataSource() {
+    	DriverManagerDataSource ds = new DriverManagerDataSource();
+
+        try {
+            ds.setDriverClassName("com.mysql.jdbc.Driver");
+            ds.setUsername("bhg-photos");
+            ds.setPassword("Aesahp8uaJ8Uob0b");
+            ds.setUrl("jdbc:mysql://localhost/bhgforum");
+
+        } catch (Exception e) {
+            //e.getMessage();
+        }
+        return ds;
+    }
+    
+    @Bean
+    public JdbcTemplate jdbcTemplate() {
+        return new JdbcTemplate(dataSource());
     }
 }
