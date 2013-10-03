@@ -1,10 +1,12 @@
 The plan is to make this a web photo gallery.
 
-Recommended development environment:
+Requirements:
 * Java 7
-* STS (http://spring.io/tools) or Eclipse
+* Maven 3
+* MongoDB (http://www.mongodb.org/downloads)
 
 Nice to have:
+* STS (http://spring.io/tools) or Eclipse
 * Sourcetree or other graphical GIT client (http://www.sourcetreeapp.com/)
 
 Copy photos-local.properties to your own version and set your properties. Mysql properties only needed in PROD.
