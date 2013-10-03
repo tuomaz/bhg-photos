@@ -22,7 +22,7 @@ public class PhpBBUserDetailsServiceImpl implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username)
 			throws UsernameNotFoundException {
-		String phpbbPasswordHash = (String) jdbcTemplate.queryForObject("select user_password from phpbb_users where username_clean = '" + username.toLowerCase() + "'", String.class);
+		String phpbbPasswordHash = jdbcTemplate.queryForObject("select user_password from phpbb_users where username_clean = '" + username.toLowerCase() + "'", String.class);
 		Collection<? extends GrantedAuthority> authorities = new ArrayList<GrantedAuthority>(Arrays.asList(new GrantedAuthority[]{ new SimpleGrantedAuthority("ROLE_USER") }));
 		UserDetails user = new User(username, phpbbPasswordHash, true, true, true, true, authorities);		
 		return user;

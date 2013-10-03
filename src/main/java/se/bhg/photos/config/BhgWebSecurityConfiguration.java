@@ -1,9 +1,15 @@
 package se.bhg.photos.config;
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.env.Environment;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -18,10 +24,10 @@ import se.bhg.photos.util.PhpBB3AuthenticationProvider;
 public class BhgWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final static String PROD_ENV = "yankton";
     @Autowired
-    PhpBB3AuthenticationProvider phpBB3AuthenticationProvider;
+    private PhpBB3AuthenticationProvider phpBB3AuthenticationProvider;
 
     @Autowired
-    Environment env;
+    private Environment env;
 
     @Override
     protected void registerAuthentication(AuthenticationManagerBuilder auth) throws Exception {
@@ -53,5 +59,6 @@ public class BhgWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
           .and()
       .formLogin()  // #8
           .loginPage("/login") // #9
-          .permitAll();    }
+          .permitAll();    
+    }
 }
