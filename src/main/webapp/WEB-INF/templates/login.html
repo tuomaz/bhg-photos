@@ -1,37 +1,17 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head th:substituteby="head :: head"></head>
-<body>
-	<div class="container">
-		<form class="form-horizontal" action='/bhg-photos/login' method="POST">
-			<fieldset>
-				<div id="legend">
-					<legend class="">Login</legend>
-				</div>
-				<div class="control-group">
-					<!-- Username -->
-					<label class="control-label" for="username">Username</label>
-					<div class="controls">
-						<input type="text" id="username" name="username" placeholder=""
-							class="input-xlarge" />
-					</div>
-				</div>
-				<div class="control-group">
-					<!-- Password-->
-					<label class="control-label" for="password">Password</label>
-					<div class="controls">
-						<input type="password" id="password" name="password"
-							placeholder="" class="input-xlarge" />
-					</div>
-				</div>
-				<div class="control-group">
-					<!-- Button -->
-					<div class="controls">
-						<button class="btn btn-success">Login</button>
-					</div>
-				</div>
-			</fieldset>
-		</form>
-		</div>
-	</body>
+<body style="padding-top: 40px; padding-bottom: 40px; background-color: #eee;">
+    <div class="container">
+      <form class="form-signin" action="login" method="POST">
+        <h2 class="form-signin-heading">Inloggning</h2>
+        <input type="text" class="form-control" placeholder="Användarnamn" name="username" autofocus="true" />
+        <input type="password" class="form-control" placeholder="Lösenord" name="password" />
+        <label class="checkbox">
+          <input type="checkbox" value="_spring_security_remember_me" /> Kom ihåg mig
+        </label>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Logga in</button>
+      </form>
+    </div> <!-- /container -->
+    </body>
 </html>

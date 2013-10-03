@@ -14,3 +14,7 @@ Copy photos-local.properties to your own version and set your properties. Mysql 
 Run:
 
 mvn -Dserver -DXmx1024m -DXms512m -Dspring.profiles.active=local clean install tomcat7:run
+
+Access the web app at localhost:8080/bhg-photos/
+username = user
+password = password

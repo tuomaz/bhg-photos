@@ -28,17 +28,16 @@ public class BhgWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private Environment env;
+    
+    @Value("${remember.me.key}") 
+    private String key;
 
     @Override
     protected void registerAuthentication(AuthenticationManagerBuilder auth) throws Exception {
         if (env.getActiveProfiles().length == 1 && PROD_ENV.equalsIgnoreCase(env.getActiveProfiles()[0])) {
             auth.authenticationProvider(phpBB3AuthenticationProvider);
-            System.out.println("=============================================");
-            System.out.println("PROD");
         } else {
             auth.inMemoryAuthentication().withUser("user").password("password").roles("USER");
-            System.out.println("=============================================");
-            System.out.println("OTHER");
         }
     }
 
@@ -59,6 +58,9 @@ public class BhgWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
           .and()
       .formLogin()  // #8
           .loginPage("/login") // #9
-          .permitAll();    
+          .permitAll()
+      .and()
+          .rememberMe()
+              .key(key);
     }
 }
