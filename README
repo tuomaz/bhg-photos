@@ -1,5 +1,14 @@
 The plan is to make this a web photo gallery.
 
-To run:
+Recommended development environment:
+* Java 7
+* STS (http://spring.io/tools) or Eclipse
 
-mvn -Dserver -DXmx4096m -DXms512m -Dspring.profiles.active=shiprock clean install tomcat7:run
+Nice to have:
+* Sourcetree or other graphical GIT client (http://www.sourcetreeapp.com/)
+
+Copy photos-local.properties to your own version and set your properties. Mysql properties only needed in PROD.
+
+Run:
+
+mvn -Dserver -DXmx1024m -DXms512m -Dspring.profiles.active=local clean install tomcat7:run
