@@ -1,20 +1,16 @@
 package se.bhg.photos.config;
 
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.env.Environment;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import se.bhg.photos.util.PhpBB3AuthenticationProvider;
 
@@ -25,6 +21,9 @@ public class BhgWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final static String PROD_ENV = "yankton";
     @Autowired
     private PhpBB3AuthenticationProvider phpBB3AuthenticationProvider;
+    
+    @Autowired
+    private UserDetailsService userDetailsService;
 
     @Autowired
     private Environment env;
@@ -61,6 +60,7 @@ public class BhgWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
           .permitAll()
       .and()
           .rememberMe()
-              .key(key);
+              .key(key)
+              .userDetailsService(userDetailsService);
     }
 }
