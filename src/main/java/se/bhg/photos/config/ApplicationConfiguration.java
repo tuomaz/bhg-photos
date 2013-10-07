@@ -111,7 +111,28 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
     }
 
     @Bean
+    public DataSource dataSourceImages() {
+        DriverManagerDataSource ds = new DriverManagerDataSource();
+
+        try {
+            ds.setDriverClassName("com.mysql.jdbc.Driver");
+            ds.setUsername(username);
+            ds.setPassword(password);
+            ds.setUrl("jdbc:mysql://localhost/bhg");
+
+        } catch (Exception e) {
+            //e.getMessage();
+        }
+        return ds;
+    }
+
+    @Bean
     public JdbcTemplate jdbcTemplate() {
         return new JdbcTemplate(dataSource());
+    }
+
+    @Bean
+    public JdbcTemplate jdbcTemplateImages() {
+        return new JdbcTemplate(dataSourceImages());
     }
 }

@@ -1,17 +1,24 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head th:substituteby="head :: head"></head>
-<body style="padding-top: 40px; padding-bottom: 40px; background-color: #eee;">
-    <div class="container">
-      <form class="form-signin" action="login" method="POST">
-        <h2 class="form-signin-heading">Inloggning</h2>
-        <input type="text" class="form-control" placeholder="Användarnamn" name="username" autofocus="true" />
-        <input type="password" class="form-control" placeholder="Lösenord" name="password" />
-        <label class="checkbox">
-          <input type="checkbox" value="_spring_security_remember_me" /> Kom ihåg mig
-        </label>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Logga in</button>
-      </form>
-    </div> <!-- /container -->
-    </body>
+<body
+  style="padding-top: 40px; padding-bottom: 40px; background-color: #eee;">
+  <div class="container">
+    <form class="form-signin" action="login" method="POST">
+      <h2 class="form-signin-heading">Inloggning</h2>
+      <input type="text" class="form-control" placeholder="Användarnamn"
+        name="username" autofocus="true" /> <input type="password"
+        class="form-control" placeholder="Lösenord" name="password" />
+      <label class="checkbox"> <input type="checkbox"
+        value="_spring_security_remember_me" /> Kom ihåg mig
+      </label>
+      <button class="btn btn-lg btn-primary btn-block" type="submit">Logga in</button>
+      <br/>
+      <div class="alert alert-danger message" th:if="${param.error != null}">
+        Fel lösenord (och/eller användarnamn)
+      </div>
+    </form>
+  </div>
+  <!-- /container -->
+</body>
 </html>
