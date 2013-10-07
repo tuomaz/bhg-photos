@@ -7,7 +7,7 @@ Requirements:
 
 Nice to have:
 * STS (http://spring.io/tools) or Eclipse
-* Sourcetree or other graphical GIT client (http://www.sourcetreeapp.com/)
+* Sourcetree or other graphical GIT client (http://www.sourcetreeapp.com/), http://mac.github.com/ 
 
 Copy photos-local.properties to your own version and set your properties. Mysql properties only needed in PROD.
 
