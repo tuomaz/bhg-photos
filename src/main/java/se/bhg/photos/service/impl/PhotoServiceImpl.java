@@ -19,6 +19,7 @@ import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.Tag;
 
+import se.bhg.photos.exception.PhotoAlreadyExistsException;
 import se.bhg.photos.model.Photo;
 import se.bhg.photos.model.PhotoStatus;
 import se.bhg.photos.service.FileService;
@@ -40,17 +41,24 @@ public class PhotoServiceImpl implements PhotoService {
     PhotoRepository photoRepository;
 
     @Override
-    public Photo addPhoto(String originalFilename, byte[] binaryData, String uploader, String uuid) throws ImageProcessingException, IOException {
-
+    public Photo addPhoto(String originalFilename, byte[] binaryData, String uploader, String uuid) throws ImageProcessingException, IOException, PhotoAlreadyExistsException {
+        long checksum = getCRC32(binaryData);
+        
+        if (photoRepository.findByChecksum(checksum) != null) {
+            LOG.error("Photo exists in database already, won't add it again. Checksum {}, filename {}.", checksum, originalFilename);
+            throw new PhotoAlreadyExistsException(checksum, originalFilename);
+        }
+        
         InputStream is = new ByteArrayInputStream(binaryData);
         BufferedInputStream bis = new BufferedInputStream(is);
         Metadata metadata = metadataService.getMetaData(bis);
 
         Photo photo = new Photo();
+        photo.setUploader(uploader);
         photo.setId(new ObjectId());
         photo.setStatus(PhotoStatus.PROCESSING);
         photo.setOriginalFilename(originalFilename);
-        photo.setChecksum(getCRC32(binaryData));
+        photo.setChecksum(checksum);
         photo.setId(new ObjectId());
         photo.setUploaded(new Date());
         LOG.debug("UUId = {}, id = ", uuid, photo.getId().toString());
