@@ -8,12 +8,12 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import com.drew.imaging.ImageProcessingException;
 
+import se.bhg.photos.exception.PhotoAlreadyExistsException;
 import se.bhg.photos.service.BhgV4ImporterService;
 import se.bhg.photos.service.FileService;
 import se.bhg.photos.service.PhotoService;
@@ -33,7 +33,7 @@ public class BhgV4ImporterServiceImpl implements BhgV4ImporterService{
     PhotoService photoService;
     
     @Override
-    public void importImagesAndGalleries() {
+    public void importImagesAndGalleries() throws PhotoAlreadyExistsException {
         //importGalleries();
         importImages();
     }
@@ -50,7 +50,7 @@ public class BhgV4ImporterServiceImpl implements BhgV4ImporterService{
         }
     }
 
-    private void importImages() {
+    private void importImages() throws PhotoAlreadyExistsException {
         long  start = System.currentTimeMillis();
         List<Map<String, Object>> result = jdbcTemplateImages.queryForList("select * from image");
         for (Map<String, Object> row: result) {
