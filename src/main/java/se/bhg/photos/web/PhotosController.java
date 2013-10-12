@@ -31,16 +31,11 @@ public class PhotosController {
     	LOG.debug("Accessed photos controller");
     	Iterable<Photo> photos = photoService.getPhotos();
     	List<Photo> full = new ArrayList<>(5000);
-    	List<Photo> subSet = new ArrayList<>(20);
     	for(Photo p: photos) {
     	    full.add(p);
     	}
     	Collections.shuffle(full);
-    	
-    	for(int n = 0; n < 20 && n < full.size(); n++) {
-    	    subSet.add(full.get(n));
-    	}
-    	
+        List<Photo> subSet = full.subList(0, 20);
     	model.addAttribute("photos", subSet);
         return "photos";
     }
