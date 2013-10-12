@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import se.bhg.photos.exception.PhotoAlreadyExistsException;
 import se.bhg.photos.service.BhgV4ImporterService;
 
 @Controller
@@ -16,7 +17,7 @@ public class RestController {
 
     @RequestMapping(value = "/importGalleries", method = RequestMethod.GET)
     @ResponseBody
-    public final String importGallery() {
+    public final String importGallery() throws PhotoAlreadyExistsException {
         bhgV4ImporterService.importImagesAndGalleries();
         return "Ok";
     }
