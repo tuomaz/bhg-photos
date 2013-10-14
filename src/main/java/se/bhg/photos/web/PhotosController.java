@@ -34,7 +34,7 @@ public class PhotosController {
     	for(Photo p: photos) {
     	    full.add(p);
     	}
-    	Collections.shuffle(full);
+    	//Collections.shuffle(full);
         List<Photo> subSet = full.subList(0, 20);
     	model.addAttribute("photos", subSet);
         return "photos";
