@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.WebRequest;
 
 import com.mortennobel.imagescaling.ResampleOp;
 import com.mortennobel.imagescaling.AdvancedResizeOp;
@@ -39,7 +40,11 @@ public class PhotoController {
 
     @ResponseBody
     @RequestMapping(value = "/photo/{id}/{max}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
-    public byte[] getPhoto(@PathVariable String id, @PathVariable int max) throws IOException {
+    public byte[] getPhoto(@PathVariable String id, @PathVariable int max, WebRequest webRequest) throws IOException {
+        if (webRequest.checkNotModified(0)) {
+            return null;
+        }
+
         Photo photo = photoService.getPhoto(id);
 
         if (photo == null) {

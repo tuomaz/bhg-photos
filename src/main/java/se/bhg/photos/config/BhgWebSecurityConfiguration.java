@@ -52,6 +52,8 @@ public class BhgWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
           .csrf()
             .disable()
+          .headers()
+             .disable()
          .authorizeRequests()
           .anyRequest().authenticated() // 7
           .and()
