@@ -118,7 +118,7 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
             ds.setDriverClassName("com.mysql.jdbc.Driver");
             ds.setUsername(username);
             ds.setPassword(password);
-            ds.setUrl("jdbc:mysql://localhost/bhg&characterEncoding=latin1");
+            ds.setUrl("jdbc:mysql://localhost/bhg?characterEncoding=latin1");
 
         } catch (Exception e) {
             //e.getMessage();
