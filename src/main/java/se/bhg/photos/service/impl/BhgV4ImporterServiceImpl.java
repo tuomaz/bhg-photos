@@ -53,7 +53,12 @@ public class BhgV4ImporterServiceImpl implements BhgV4ImporterService{
     private void importImages() throws PhotoAlreadyExistsException {
         long  start = System.currentTimeMillis();
         List<Map<String, Object>> result = jdbcTemplateImages.queryForList("select * from image");
+        int n = 0;
         for (Map<String, Object> row: result) {
+            n++;
+            if (n > 100) {
+                break;
+            }
             LOG.info("Found images!");
             String file = (String) row.get("filename");
             int lastSlash = file.lastIndexOf("/");
@@ -79,7 +84,7 @@ public class BhgV4ImporterServiceImpl implements BhgV4ImporterService{
             
             try {
                 photoService.addPhoto(fileName, fileData, username, uuid);
-            } catch (ImageProcessingException | IOException e) {
+            } catch (ImageProcessingException | IOException | PhotoAlreadyExistsException e) {
                 LOG.error("Could add file {}: {}", filePath, e.getLocalizedMessage());
                 e.printStackTrace();
             }
