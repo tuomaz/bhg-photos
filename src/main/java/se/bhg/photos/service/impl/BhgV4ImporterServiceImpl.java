@@ -55,10 +55,6 @@ public class BhgV4ImporterServiceImpl implements BhgV4ImporterService{
         List<Map<String, Object>> result = jdbcTemplateImages.queryForList("select * from image");
         int n = 0;
         for (Map<String, Object> row: result) {
-            n++;
-            if (n > 100) {
-                break;
-            }
             LOG.info("Found images!");
             String file = (String) row.get("filename");
             int lastSlash = file.lastIndexOf("/");
