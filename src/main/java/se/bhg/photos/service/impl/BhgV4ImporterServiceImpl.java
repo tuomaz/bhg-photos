@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.drew.imaging.ImageProcessingException;
 
 import se.bhg.photos.exception.PhotoAlreadyExistsException;
+import se.bhg.photos.model.Photo;
 import se.bhg.photos.service.BhgV4ImporterService;
 import se.bhg.photos.service.FileService;
 import se.bhg.photos.service.PhotoService;
@@ -60,7 +61,7 @@ public class BhgV4ImporterServiceImpl implements BhgV4ImporterService{
             int lastSlash = file.lastIndexOf("/");
             String fileName = null;
             if (lastSlash < file.length() && lastSlash > 0) {
-                fileName = file.substring(lastSlash);
+                fileName = file.substring(lastSlash + 1);
             } else {
             	LOG.error("Could not find slash in {}", file);
                 continue;
@@ -79,12 +80,16 @@ public class BhgV4ImporterServiceImpl implements BhgV4ImporterService{
             String username = (String) row.get("owner");
             
             try {
-                photoService.addPhoto(fileName, fileData, username, uuid);
+                Photo photo = photoService.addPhoto(fileName, fileData, username, uuid);
+                photo.setViews(Integer.parseInt((String) row.get("views")));
+                photo.setOldId(Integer.parseInt((String) row.get("id")));
+                photo.setImported(true);
+                photoService.save(photo);
             } catch (ImageProcessingException | IOException | PhotoAlreadyExistsException e) {
-                LOG.error("Could add file {}: {}", filePath, e.getLocalizedMessage());
+                LOG.error("Could not add file {}: {}", filePath, e.getLocalizedMessage());
                 e.printStackTrace();
             }
-            
+            n++;
             /*
             for (Map.Entry<String, Object> entry : row.entrySet()) {
                 String key = entry.getKey();
@@ -94,6 +99,6 @@ public class BhgV4ImporterServiceImpl implements BhgV4ImporterService{
             */
         }
         long end = System.currentTimeMillis();
-        LOG.info("Time to import images {}ms", end-start);
+        LOG.info("Imported {} images in {}ms", n, end-start);
     }
 }
