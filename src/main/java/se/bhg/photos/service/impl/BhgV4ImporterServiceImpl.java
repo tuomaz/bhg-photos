@@ -82,8 +82,8 @@ public class BhgV4ImporterServiceImpl implements BhgV4ImporterService{
             
             try {
                 Photo photo = photoService.addPhoto(fileName, fileData, username, uuid, gallery);
-                photo.setViews(Integer.parseInt((String) row.get("views")));
-                photo.setOldId(Integer.parseInt((String) row.get("id")));
+                photo.setViews(((int) row.get("views")));
+                photo.setOldId(((int) row.get("id")));
                 photo.setImported(true);
                 photoService.save(photo);
             } catch (ImageProcessingException | IOException | PhotoAlreadyExistsException e) {
