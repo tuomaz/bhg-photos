@@ -27,7 +27,7 @@ public class FileServiceImpl implements FileService {
     private String basePath;
 
     @Override
-    public void writeFile(Photo photo, byte[] data) {
+    public void writeFile(Photo photo, String directoryHint, byte[] data) {
         
         String normalizedFilename = normalizeFilename(photo.getOriginalFilename());
         String fileSuffix = determineFileType(data).toString();
@@ -39,6 +39,8 @@ public class FileServiceImpl implements FileService {
         finalPath.append(getPath(photo));
         finalPath.append(SEPARATOR);
         finalPath.append(photo.getUploader());
+        finalPath.append(SEPARATOR);
+        finalPath.append(directoryHint);
         finalPath.append(SEPARATOR);
         finalPath.append(normalizedFilename);
         finalPath.append(".");
@@ -85,7 +87,7 @@ public class FileServiceImpl implements FileService {
             sb.append(filename);
         }
 
-        return sb.toString().replaceAll("åä", "a").replaceAll("ÅÄ", "A").replaceAll("ö", "o").replaceAll("Ö", "O").replaceAll("\\W+", "-");
+        return sb.toString().replaceAll("\\W", "-");
     }
 
     private String getPath(Photo photo) {

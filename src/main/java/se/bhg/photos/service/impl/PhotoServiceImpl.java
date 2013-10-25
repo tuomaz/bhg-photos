@@ -4,6 +4,8 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.zip.CRC32;
 import java.util.zip.Checksum;
@@ -40,8 +42,9 @@ public class PhotoServiceImpl implements PhotoService {
     @Autowired
     PhotoRepository photoRepository;
 
-    @Override
-    public Photo addPhoto(String originalFilename, byte[] binaryData, String uploader, String uuid) throws ImageProcessingException, IOException, PhotoAlreadyExistsException {
+	@Override
+	public Photo addPhoto(String originalFilename, byte[] binaryData, String uploader, String uuid, String directoryHint) throws ImageProcessingException, IOException,
+			PhotoAlreadyExistsException {
         long checksum = getCRC32(binaryData);
         
         if (photoRepository.findByChecksum(checksum) != null) {
@@ -65,13 +68,19 @@ public class PhotoServiceImpl implements PhotoService {
 
         // photo.setMetadata(metadata);
 
-        fileService.writeFile(photo, binaryData);
+        fileService.writeFile(photo, directoryHint, binaryData);
 
         // checkMetadata(metadata);
 
         photoRepository.save(photo);
         
         return photo;
+	}
+    
+    @Override
+    public Photo addPhoto(String originalFilename, byte[] binaryData, String uploader, String uuid) throws ImageProcessingException, IOException, PhotoAlreadyExistsException {
+    	String directoryHint = new SimpleDateFormat("HH").format(Calendar.getInstance().getTime());
+    	return addPhoto(originalFilename, binaryData, uploader, uuid, directoryHint);
     }
 
     public Photo getPhoto(String id) {

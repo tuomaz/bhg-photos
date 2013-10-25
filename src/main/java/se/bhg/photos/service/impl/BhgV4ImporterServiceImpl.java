@@ -78,9 +78,10 @@ public class BhgV4ImporterServiceImpl implements BhgV4ImporterService{
             }
             String uuid = UUID.randomUUID().toString();
             String username = (String) row.get("owner");
+            String gallery = (String) row.get("gallery");
             
             try {
-                Photo photo = photoService.addPhoto(fileName, fileData, username, uuid);
+                Photo photo = photoService.addPhoto(fileName, fileData, username, uuid, gallery);
                 photo.setViews(Integer.parseInt((String) row.get("views")));
                 photo.setOldId(Integer.parseInt((String) row.get("id")));
                 photo.setImported(true);
