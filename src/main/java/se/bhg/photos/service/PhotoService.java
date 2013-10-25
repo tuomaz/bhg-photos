@@ -12,4 +12,5 @@ public interface PhotoService {
 	Photo addPhoto(String originalFilename, byte[] binaryData, String uploader, String uuid, String directoryHint) throws ImageProcessingException, IOException, PhotoAlreadyExistsException;
 	Photo getPhoto(String id);
 	Iterable<Photo> getPhotos();
+	void save(Photo photo);
 }

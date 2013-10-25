@@ -11,6 +11,8 @@ import com.drew.metadata.Metadata;
 public class Photo {
     @Id
     private ObjectId id;
+    private int oldId;
+    private int views;
     private FileType fileType;
     private String uploader;
     private String filename;
@@ -21,6 +23,7 @@ public class Photo {
     private Date shot;
     private long checksum;
     private PhotoStatus status;
+    private boolean imported;
 
     public long getChecksum() {
         return checksum;
@@ -117,4 +120,28 @@ public class Photo {
     public void setStatus(PhotoStatus status) {
         this.status = status;
     }
+
+	public int getOldId() {
+		return oldId;
+	}
+
+	public void setOldId(int oldId) {
+		this.oldId = oldId;
+	}
+
+	public int getViews() {
+		return views;
+	}
+
+	public void setViews(int views) {
+		this.views = views;
+	}
+
+	public boolean isImported() {
+		return imported;
+	}
+
+	public void setImported(boolean imported) {
+		this.imported = imported;
+	}
 }
