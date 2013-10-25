@@ -35,8 +35,8 @@ public class PhotosController {
     	    full.add(p);
     	}
     	//Collections.shuffle(full);
-        List<Photo> subSet = full.subList(1000, 1020);
-    	model.addAttribute("photos", subSet);
+        //List<Photo> subSet = full.subList(1000, 1020);
+    	model.addAttribute("photos", full);
         return "photos";
     }
 }
