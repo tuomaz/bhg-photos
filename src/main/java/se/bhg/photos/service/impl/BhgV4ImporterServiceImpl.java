@@ -78,7 +78,7 @@ public class BhgV4ImporterServiceImpl implements BhgV4ImporterService{
             }
             String uuid = UUID.randomUUID().toString();
             String username = (String) row.get("owner");
-            String gallery = (String) row.get("gallery");
+            String gallery = Integer.toString((int) row.get("gallery"));
             
             try {
                 Photo photo = photoService.addPhoto(fileName, fileData, username, uuid, gallery);
