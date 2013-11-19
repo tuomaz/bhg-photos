@@ -3,24 +3,21 @@ package se.bhg.photos.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.mongodb.MongoDbFactory;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
+import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
 import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
-import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
+import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
-import com.mongodb.WriteConcern;
 
 @Configuration
 @EnableMongoRepositories(basePackages = "se.bhg.photos.repository")
-public class MongoConfiguration {
+public class MongoConfiguration extends AbstractMongoConfiguration {
+    @Value("${mongo.url}")
+    private String url;
 
-    @Value("${mongo.host}")
-    private String mongoURL;
-    @Value("${mongo.db}")
-    private String mongoDB;
+    @Value("${mongo.dbname}")
+    private String dbName;
 
     @Value("${mongo.user}")
     private String mongoUser;
@@ -28,21 +25,22 @@ public class MongoConfiguration {
     @Value("${mongo.password}")
     private String mongoPassword;
 
-    private MongoDbFactory mongoDbFactory() throws Exception {
-        // MongoClientOptions mongoOptions =
-        // MongoClientOptions.builder().connectionsPerHost(200).build();
+    @Override
+    public String getDatabaseName() {
+        return dbName;
+    }
 
-        MongoClient mongo = null;
-        mongo = new MongoClient(mongoURL);
-        return new SimpleMongoDbFactory(mongo, mongoDB);
+    @Override
+    @Bean
+    public Mongo mongo() throws Exception {
+        return new MongoClient(url);
     }
 
     @Bean
-    public MongoTemplate mongoTemplate() throws Exception {
-        MappingMongoConverter converter =  new MappingMongoConverter(mongoDbFactory(), new MongoMappingContext());
-        //converter.setMapKeyDotReplacement("|");
-        MongoTemplate mongoTemplate = new MongoTemplate(mongoDbFactory(), converter);
-        mongoTemplate.setWriteConcern(WriteConcern.SAFE);
-        return mongoTemplate;
+    @Override
+    public MappingMongoConverter mappingMongoConverter() throws Exception {
+        MappingMongoConverter mmc = super.mappingMongoConverter();
+        mmc.setMapKeyDotReplacement("<dot>");
+        return mmc;
     }
 }
