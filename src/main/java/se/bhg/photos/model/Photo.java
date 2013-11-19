@@ -3,10 +3,7 @@ package se.bhg.photos.model;
 import java.util.Date;
 
 import org.bson.types.ObjectId;
-import org.joda.time.DateTime;
 import org.springframework.data.annotation.Id;
-
-import com.drew.metadata.Metadata;
 
 public class Photo {
     @Id

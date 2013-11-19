@@ -17,13 +17,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.drew.imaging.ImageProcessingException;
+import com.drew.lang.GeoLocation;
 import com.drew.metadata.Directory;
-import com.drew.metadata.Metadata;
 import com.drew.metadata.Tag;
+import com.drew.metadata.exif.ExifSubIFDDirectory;
+import com.drew.metadata.exif.GpsDirectory;
 
 import se.bhg.photos.exception.PhotoAlreadyExistsException;
 import se.bhg.photos.model.Photo;
 import se.bhg.photos.model.PhotoStatus;
+import se.bhg.photos.model.Metadata;
 import se.bhg.photos.service.FileService;
 import se.bhg.photos.service.MetadataService;
 import se.bhg.photos.service.PhotoService;
@@ -54,7 +57,7 @@ public class PhotoServiceImpl implements PhotoService {
         
         InputStream is = new ByteArrayInputStream(binaryData);
         BufferedInputStream bis = new BufferedInputStream(is);
-        Metadata metadata = metadataService.getMetaData(bis);
+        com.drew.metadata.Metadata metadata = metadataService.getMetaData(bis);
 
         Photo photo = new Photo();
         photo.setUploader(uploader);
@@ -64,13 +67,14 @@ public class PhotoServiceImpl implements PhotoService {
         photo.setChecksum(checksum);
         photo.setId(new ObjectId());
         photo.setUploaded(new Date());
+        photo.setMetadata(getMetadata(metadata));
         LOG.debug("UUId = {}, id = ", uuid, photo.getId().toString());
 
-        // photo.setMetadata(metadata);
+        //photo.setMetadata(metadata);
 
         fileService.writeFile(photo, directoryHint, binaryData);
 
-        // checkMetadata(metadata);
+        //checkMetadata(metadata);
 
         photoRepository.save(photo);
         
@@ -101,11 +105,38 @@ public class PhotoServiceImpl implements PhotoService {
         return checksum.getValue();
     }
 
+    /*
     private void checkMetadata(Metadata metadata) {
         for (Directory directory : metadata.getDirectories()) {
             for (Tag tag : directory.getTags()) {
                 LOG.debug(tag.toString());
             }
         }
+    }
+    */
+
+    private Metadata getMetadata(com.drew.metadata.Metadata metadata) {
+        Metadata md = new Metadata();
+        ExifSubIFDDirectory exif = metadata.getDirectory(ExifSubIFDDirectory.class);
+        Date date = exif.getDate(ExifSubIFDDirectory.TAG_DATETIME_ORIGINAL);
+        md.setTimestamp(date);
+        
+        GpsDirectory gps = metadata.getDirectory(GpsDirectory.class);
+        if (gps != null) {
+            GeoLocation location = gps.getGeoLocation();
+            md.setLongitude(location.getLongitude());
+            md.setLatitude(location.getLatitude());
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        return md;
     }
 }

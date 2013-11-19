@@ -22,7 +22,7 @@ import se.bhg.photos.service.PhotoService;
 @Service
 public class BhgV4ImporterServiceImpl implements BhgV4ImporterService{
     private static final Logger LOG = LoggerFactory.getLogger(FileServiceImpl.class);
-    private final static String BASE_PATH_V4 = "/tmp/oldbhg/";
+    private final static String BASE_PATH_V4 = "/Volumes/500G/dev/oldbhg";
 
     @Autowired
     JdbcTemplate jdbcTemplateImages;
@@ -67,10 +67,10 @@ public class BhgV4ImporterServiceImpl implements BhgV4ImporterService{
                 continue;
             }
             
-            String filePath = BASE_PATH_V4 + file;
+            String filePath = BASE_PATH_V4 + "/" + file;
             byte[] fileData;
             try {
-                fileData = fileService.readFile(BASE_PATH_V4 + file);
+                fileData = fileService.readFile(filePath);
             } catch (IOException e) {
                 LOG.error("Could not read file {}: {}", filePath, e.getLocalizedMessage());
                 e.printStackTrace();
