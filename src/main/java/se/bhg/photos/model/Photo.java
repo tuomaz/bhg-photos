@@ -19,6 +19,7 @@ public class Photo {
     private Date uploaded;
     private Date shot;
     private long checksum;
+    private String sha512;
     private PhotoStatus status;
     private boolean imported;
 
@@ -140,5 +141,13 @@ public class Photo {
 
 	public void setImported(boolean imported) {
 		this.imported = imported;
+	}
+
+	public String getSha512() {
+		return sha512;
+	}
+
+	public void setSha512(String sha512) {
+		this.sha512 = sha512;
 	}
 }

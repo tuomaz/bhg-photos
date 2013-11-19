@@ -4,11 +4,15 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.zip.CRC32;
 import java.util.zip.Checksum;
+
+import javax.xml.bind.DatatypeConverter;
 
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
@@ -49,10 +53,14 @@ public class PhotoServiceImpl implements PhotoService {
 	public Photo addPhoto(String originalFilename, byte[] binaryData, String uploader, String uuid, String directoryHint) throws ImageProcessingException, IOException,
 			PhotoAlreadyExistsException {
         long checksum = getCRC32(binaryData);
+        String sha512 = DatatypeConverter.printHexBinary(getSHA512(binaryData));
         
-        if (photoRepository.findByChecksum(checksum) != null) {
-            LOG.error("Photo exists in database already, won't add it again. Checksum {}, filename {}.", checksum, originalFilename);
-            throw new PhotoAlreadyExistsException(checksum, originalFilename);
+        Photo existingPhoto = photoRepository.findByChecksum(checksum);
+        if (existingPhoto != null) {
+        	if (sha512.equalsIgnoreCase(existingPhoto.getSha512())) {
+        		LOG.error("Photo exists in database already, won't add it again. Checksum {}, SHA-512 {} filename {}.", checksum, sha512, originalFilename);
+        		throw new PhotoAlreadyExistsException(checksum, originalFilename);
+        	}
         }
         
         InputStream is = new ByteArrayInputStream(binaryData);
@@ -65,16 +73,17 @@ public class PhotoServiceImpl implements PhotoService {
         photo.setStatus(PhotoStatus.PROCESSING);
         photo.setOriginalFilename(originalFilename);
         photo.setChecksum(checksum);
+        photo.setSha512(sha512);
         photo.setId(new ObjectId());
         photo.setUploaded(new Date());
         photo.setMetadata(getMetadata(metadata));
         LOG.debug("UUId = {}, id = ", uuid, photo.getId().toString());
 
-        //photo.setMetadata(metadata);
-
         fileService.writeFile(photo, directoryHint, binaryData);
 
-        //checkMetadata(metadata);
+        photo.setMetadata(getMetadata(metadata));
+
+        fileService.writeFile(photo, directoryHint, binaryData);
 
         photoRepository.save(photo);
         
@@ -103,6 +112,17 @@ public class PhotoServiceImpl implements PhotoService {
         Checksum checksum = new CRC32();
         checksum.update(data, 0, data.length);
         return checksum.getValue();
+    }
+    
+    private byte[] getSHA512(byte[] data) {
+    	try {
+			MessageDigest md = MessageDigest.getInstance("SHA-512");
+			md.update(data, 0, data.length);
+			return md.digest();
+			
+		} catch (NoSuchAlgorithmException e) {
+			return null;
+		}
     }
 
     /*
