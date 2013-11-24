@@ -7,8 +7,11 @@ import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.zip.CRC32;
 import java.util.zip.Checksum;
 
@@ -28,6 +31,7 @@ import com.drew.metadata.exif.ExifSubIFDDirectory;
 import com.drew.metadata.exif.GpsDirectory;
 
 import se.bhg.photos.exception.PhotoAlreadyExistsException;
+import se.bhg.photos.model.AlbumPhoto;
 import se.bhg.photos.model.Photo;
 import se.bhg.photos.model.PhotoStatus;
 import se.bhg.photos.model.Metadata;
@@ -49,18 +53,18 @@ public class PhotoServiceImpl implements PhotoService {
     @Autowired
     PhotoRepository photoRepository;
 
-	@Override
-	public Photo addPhoto(String originalFilename, byte[] binaryData, String uploader, String uuid, String directoryHint) throws ImageProcessingException, IOException,
-			PhotoAlreadyExistsException {
+    @Override
+    public Photo addPhoto(String originalFilename, byte[] binaryData, String uploader, String uuid, String directoryHint) throws ImageProcessingException, IOException,
+            PhotoAlreadyExistsException {
         long checksum = getCRC32(binaryData);
         String sha512 = DatatypeConverter.printHexBinary(getSHA512(binaryData));
         
         Photo existingPhoto = photoRepository.findByChecksum(checksum);
         if (existingPhoto != null) {
-        	if (sha512.equalsIgnoreCase(existingPhoto.getSha512())) {
-        		LOG.error("Photo exists in database already, won't add it again. Checksum {}, SHA-512 {} filename {}.", checksum, sha512, originalFilename);
-        		throw new PhotoAlreadyExistsException(checksum, originalFilename);
-        	}
+            if (sha512.equalsIgnoreCase(existingPhoto.getSha512())) {
+                LOG.error("Photo exists in database already, won't add it again. Checksum {}, SHA-512 {} filename {}.", checksum, sha512, originalFilename);
+                throw new PhotoAlreadyExistsException(checksum, originalFilename);
+            }
         }
         
         InputStream is = new ByteArrayInputStream(binaryData);
@@ -82,8 +86,6 @@ public class PhotoServiceImpl implements PhotoService {
         fileService.writeFile(photo, directoryHint, binaryData);
 
         photo.setMetadata(getMetadata(metadata));
-
-        fileService.writeFile(photo, directoryHint, binaryData);
 
         photoRepository.save(photo);
         
@@ -138,14 +140,18 @@ public class PhotoServiceImpl implements PhotoService {
     private Metadata getMetadata(com.drew.metadata.Metadata metadata) {
         Metadata md = new Metadata();
         ExifSubIFDDirectory exif = metadata.getDirectory(ExifSubIFDDirectory.class);
-        Date date = exif.getDate(ExifSubIFDDirectory.TAG_DATETIME_ORIGINAL);
-        md.setTimestamp(date);
+        if (exif != null) {
+        	Date date = exif.getDate(ExifSubIFDDirectory.TAG_DATETIME_ORIGINAL);
+        	md.setTimestamp(date);
+        }
         
         GpsDirectory gps = metadata.getDirectory(GpsDirectory.class);
         if (gps != null) {
             GeoLocation location = gps.getGeoLocation();
-            md.setLongitude(location.getLongitude());
-            md.setLatitude(location.getLatitude());
+            if (location != null) {
+                md.setLongitude(location.getLongitude());
+                md.setLatitude(location.getLatitude());
+            }
         }
         
         
@@ -158,5 +164,22 @@ public class PhotoServiceImpl implements PhotoService {
         
         
         return md;
+    }
+    
+    @Override
+    public Photo findByOldId(int oldId) {
+        return photoRepository.findByOldId(oldId);
+    }
+
+    @Override
+    public List<Photo> getAlbumPhotos(List<AlbumPhoto> albumPhotos) {
+        if (albumPhotos == null) {
+            return Collections.EMPTY_LIST;
+        }
+        List<Photo> pl = new ArrayList<Photo>(albumPhotos.size());
+        for (AlbumPhoto ap : albumPhotos) {
+            pl.add(photoRepository.findOne(ap.getPhoto().toString()));
+        }
+        return pl;
     }
 }

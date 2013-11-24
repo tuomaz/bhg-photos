@@ -14,10 +14,23 @@
         </encoder>
     </appender>
 
+    <appender name="ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${catalina.base}/logs/photos.log</file>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%t] %-5p %c - %m%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${catalina.base}/logs/photos.%d{yyyy-MM-dd}.log.gz
+            </fileNamePattern>
+            <maxHistory>999</maxHistory>
+        </rollingPolicy>
+    </appender>
+
     <logger name="se.bhg" level="debug"/>
     <logger name="org.thymeleaf" level="error"/>
-         
+
     <root level="debug">
         <appender-ref ref="console"/>
+        <appender-ref ref="ROLLING"/>
     </root>
 </configuration>
