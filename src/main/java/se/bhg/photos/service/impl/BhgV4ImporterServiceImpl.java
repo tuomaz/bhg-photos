@@ -46,8 +46,8 @@ public class BhgV4ImporterServiceImpl implements BhgV4ImporterService{
     
     @Override
     public void importImagesAndGalleries() throws PhotoAlreadyExistsException {
+        importImages();
         importGalleries();
-        //importImages();
     }
 
     private void importGalleries() {
