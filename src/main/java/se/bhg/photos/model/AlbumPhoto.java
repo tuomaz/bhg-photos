@@ -6,12 +6,16 @@ public class AlbumPhoto implements Comparable<AlbumPhoto> {
     private ObjectId id;
     private ObjectId photo;
     private int position;
-    
+
     public ObjectId getPhoto() {
         return photo;
     }
 
-    public void setPhoto(ObjectId photo) {
+    public String getPhotoIdText() {
+        return photo.toString();
+    }
+
+    public void setPhoto(final ObjectId photo) {
         this.photo = photo;
     }
 
@@ -19,17 +23,17 @@ public class AlbumPhoto implements Comparable<AlbumPhoto> {
         return position;
     }
 
-    public void setPosition(int position) {
+    public void setPosition(final int position) {
         this.position = position;
     }
 
-    public AlbumPhoto(ObjectId id, int position) {
+    public AlbumPhoto(final ObjectId id, final int position) {
         this.photo = id;
         this.position = position;
     }
 
     @Override
-    public int compareTo(AlbumPhoto o) {
+    public int compareTo(final AlbumPhoto o) {
         return this.position - o.getPosition();
     }
 }

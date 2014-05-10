@@ -1,0 +1,15 @@
+{{album.name}}
+    <a class="arrow prev" href="#/album/{{album.id}}" ng-click="nextSlide()">Nästa</a>
+    <a class="arrow next" href="#/album/{{album.id}}" ng-click="prevSlide()">Föregående</a>
+    <a class="" href="#/album" ng-click="prevSlide()">Tillbaka till albumlistan</a>
+
+<div class="container slider">
+    <img ng-repeat="photo in album.photos" class="slide"
+        ng-hide="!isCurrentSlideIndex($index)" ng-src="{{'/foton/photo/' + photo.photoIdText + '/600'}}">
+        <nav class="nav">
+        <div class="wrapper">
+                    <a ng-repeat="photo in album.photos" href="#/album/{{album.id}}" ng-class="{'active':isCurrentSlideIndex($index)}"
+                      ng-click="setCurrentSlideIndex($index);"><img id="{{photo.photoIdText}}" ng-src="{{'/foton/photo/' + photo.photoIdText + '/250'}}"></a></li>
+        </div>
+    </nav>
+</div>

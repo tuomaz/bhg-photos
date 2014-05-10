@@ -46,8 +46,8 @@
 </nav>  
 
     <div id="links">
-        <a th:each="photo : ${album.photos}" th:href="${'/bhg-photos/photo/' + photo.photo + '/1500'}" >
-            <img class="img-thumbnail" th:src="${'/bhg-photos/photo/' + photo.photo + '/250'}"/>
+        <a th:each="photo : ${album.photos}" th:href="${'/foton/photo/' + photo.photo + '/1500'}" >
+            <img class="img-thumbnail" th:src="${'/foton/photo/' + photo.photo + '/250'}"/>
         </a>
     </div>
 
@@ -56,8 +56,8 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="/bhg-photos/assets/js/bootstrap.min.js"></script>
-    <script src="/bhg-photos/assets/js/blueimp-gallery.min.js"></script>
+    <script src="/foton/assets/js/bootstrap.min.js"></script>
+    <script src="/foton/assets/js/blueimp-gallery.min.js"></script>
     <script>
 document.getElementById('links').onclick = function (event) {
     event = event || window.event;

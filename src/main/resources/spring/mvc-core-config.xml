@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- - DispatcherServlet application context for foton's web tier. -->
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+  xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+  xsi:schemaLocation="http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.4.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+  <context:property-placeholder location="classpath:conf/foton-${spring.profiles.active}.properties"
+    ignore-resource-not-found="true" system-properties-mode="OVERRIDE" />
+
+  <context:component-scan base-package="se.bhg.photos" />
+
+  <mvc:annotation-driven />
+
+  <mvc:resources mapping="/resources/**" location="/resources/" />
+
+  <!-- uses WebJars so Javascript and CSS libs can be declared as Maven dependencies (Bootstrap, jQuery...) -->
+  <mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/" />
+
+  <mvc:view-controller path="/" view-name="welcome" />
+
+  <!-- serve static resources (*.html, ...) from src/main/webapp/ -->
+  <mvc:default-servlet-handler />
+
+  <!-- - Message source for this context, loaded from localized "messages_xx" files. - Files are stored inside src/main/resources -->
+  <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource" p:basename="messages/messages" />
+
+  <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <property name="prefix">
+      <value>/WEB-INF/views/</value>
+    </property>
+    <property name="suffix">
+      <value>.jsp</value>
+    </property>
+  </bean>
+
+  <!-- - This bean resolves specific types of exceptions to corresponding logical - view names for error views. -->
+  <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+    <!-- view name resolved using bean of type InternalResourceViewResolver (declared in mvc-view-config.xml) -->
+    <property name="defaultErrorView" value="exception" />
+    <!-- results into 'WEB-INF/jsp/exception.jsp' -->
+    <property name="warnLogCategory" value="warn" />
+    <!-- needed otherwise exceptions won't be logged anywhere -->
+  </bean>
+
+  <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    <property name="maxUploadSize" value="1000000" />
+  </bean>
+  <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+    <property name="url" value="jdbc:mysql://localhost:3307/bhg" />
+    <property name="username" value="${phpbb3mysql.username}" />
+    <property name="password" value="${phpbb3mysql.password}" />
+  </bean>
+
+  <bean id="dataSourceImages" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+    <property name="url" value="jdbc:mysql://localhost:3307/bhg" />
+    <property name="username" value="${phpbb3mysql.username}" />
+    <property name="password" value="${phpbb3mysql.password}" />
+  </bean>
+
+  <bean class="com.mongodb.MongoURI" id="mongoURI">
+    <constructor-arg value="${mongo.url}" />
+  </bean>
+
+  <bean class="com.mongodb.Mongo" id="mongo">
+    <constructor-arg ref="mongoURI" />
+  </bean>
+
+  <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+    <constructor-arg name="mongo" ref="mongo" />
+    <constructor-arg name="databaseName" value="${mongo.dbname}" />
+  </bean>
+
+  <mongo:repositories base-package="se.bhg.photos.repository" />
+</beans>

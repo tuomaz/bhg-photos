@@ -1,0 +1,18 @@
+<beans:beans profile="local" xmlns="http://www.springframework.org/schema/security" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:beans="http://www.springframework.org/schema/beans"
+  xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+  <http auto-config="true" use-expressions="true">
+    <intercept-url pattern="/**" access="hasRole('ROLE_USER')" />
+    <logout logout-url="/logout" />
+  </http>
+
+  <authentication-manager alias="authenticationManager">
+    <authentication-provider>
+      <user-service>
+        <user name="user" password="password" authorities="ROLE_USER, ROLE_ADMIN" />
+      </user-service>
+    </authentication-provider>
+  </authentication-manager>
+</beans:beans>

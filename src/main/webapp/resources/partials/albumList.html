@@ -1,0 +1,6 @@
+  <p>Antal album: {{albums.length}}</p>
+  <ul>
+    <li ng-repeat="album in albums">
+      <a href="#/album/{{album.id}}">{{album.name}}</a>
+    </li>
+  </ul>

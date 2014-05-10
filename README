@@ -18,3 +18,8 @@ mvn -Dserver -DXmx1024m -DXms512m -Dspring.profiles.active=local clean install t
 Access the web app at localhost:8080/bhg-photos/
 username = user
 password = password
+
+
+
+
+

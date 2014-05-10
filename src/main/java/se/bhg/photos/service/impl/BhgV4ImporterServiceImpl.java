@@ -8,14 +8,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.sql.DataSource;
+
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-
-import com.drew.imaging.ImageProcessingException;
 
 import se.bhg.photos.exception.PhotoAlreadyExistsException;
 import se.bhg.photos.model.Album;
@@ -26,14 +26,15 @@ import se.bhg.photos.service.BhgV4ImporterService;
 import se.bhg.photos.service.FileService;
 import se.bhg.photos.service.PhotoService;
 
-@Service
-public class BhgV4ImporterServiceImpl implements BhgV4ImporterService{
-    private static final Logger LOG = LoggerFactory.getLogger(BhgV4ImporterServiceImpl.class);
-    private final static String BASE_PATH_V4 = "/home/fredrik/tmp/oldbhg";
+import com.drew.imaging.ImageProcessingException;
 
-    @Autowired
+@Service
+public class BhgV4ImporterServiceImpl implements BhgV4ImporterService {
+    private static final Logger LOG = LoggerFactory.getLogger(BhgV4ImporterServiceImpl.class);
+    private final static String BASE_PATH_V4 = "/Users/frtu01/Documents/bhg/data/old/original";
+
     JdbcTemplate jdbcTemplateImages;
-    
+
     @Autowired
     FileService fileService;
 
@@ -43,18 +44,22 @@ public class BhgV4ImporterServiceImpl implements BhgV4ImporterService{
     @Autowired
     AlbumRepository albumRepository;
 
-    
     @Override
     public void importImagesAndGalleries() throws PhotoAlreadyExistsException {
         importImages();
         importGalleries();
     }
 
+    @Autowired
+    public void setDataSourceImage(final DataSource dataSource) {
+        this.jdbcTemplateImages = new JdbcTemplate(dataSource);
+    }
+
     private void importGalleries() {
         long start = System.currentTimeMillis();
         int n = 0;
         List<Map<String, Object>> result = jdbcTemplateImages.queryForList("select * from gallery");
-        for (Map<String, Object> row: result) {
+        for (Map<String, Object> row : result) {
             LOG.info("Found gallery!");
             Album album = new Album();
             album.setId(new ObjectId());
@@ -72,7 +77,7 @@ public class BhgV4ImporterServiceImpl implements BhgV4ImporterService{
 
             ArrayList<AlbumPhoto> albumPhotos = new ArrayList<>();
             List<Map<String, Object>> res = jdbcTemplateImages.queryForList("select * from image where gallery = " + album.getOldId());
-            for (Map<String, Object> r: res) {
+            for (Map<String, Object> r : res) {
                 int id = (int) r.get("id");
                 Photo p = photoService.findByOldId(id);
                 if (p != null) {
@@ -87,14 +92,14 @@ public class BhgV4ImporterServiceImpl implements BhgV4ImporterService{
             n++;
         }
         long end = System.currentTimeMillis();
-        LOG.info("Imported {} galleries in {} seconds ({} per second)", n, (end-start) / 1000, n / ((end-start) / 1000));
+        LOG.info("Imported {} galleries in {} seconds ({} per second)", n, (end - start) / 1000, n / ((end - start) / 1000));
     }
 
     private void importImages() throws PhotoAlreadyExistsException {
-        long  start = System.currentTimeMillis();
+        long start = System.currentTimeMillis();
         List<Map<String, Object>> result = jdbcTemplateImages.queryForList("select * from image");
         int n = 0;
-        for (Map<String, Object> row: result) {
+        for (Map<String, Object> row : result) {
             LOG.info("Found images!");
             String file = (String) row.get("filename");
             int lastSlash = file.lastIndexOf("/");
@@ -102,10 +107,10 @@ public class BhgV4ImporterServiceImpl implements BhgV4ImporterService{
             if (lastSlash < file.length() && lastSlash > 0) {
                 fileName = file.substring(lastSlash + 1);
             } else {
-            	LOG.error("Could not find slash in {}", file);
+                LOG.error("Could not find slash in {}", file);
                 continue;
             }
-            
+
             String filePath = BASE_PATH_V4 + "/" + file;
             byte[] fileData;
             try {
@@ -118,7 +123,7 @@ public class BhgV4ImporterServiceImpl implements BhgV4ImporterService{
             String uuid = UUID.randomUUID().toString();
             String username = (String) row.get("owner");
             String gallery = Integer.toString((int) row.get("gallery"));
-            
+
             try {
                 Photo photo = photoService.addPhoto(fileName, fileData, username, uuid, gallery);
                 photo.setViews(((int) row.get("views")));
@@ -132,14 +137,10 @@ public class BhgV4ImporterServiceImpl implements BhgV4ImporterService{
             }
             n++;
             /*
-            for (Map.Entry<String, Object> entry : row.entrySet()) {
-                String key = entry.getKey();
-                Object value = entry.getValue();
-                LOG.info(key + " = " + value);
-            }
-            */
+             * for (Map.Entry<String, Object> entry : row.entrySet()) { String key = entry.getKey(); Object value = entry.getValue(); LOG.info(key + " = " + value); }
+             */
         }
         long end = System.currentTimeMillis();
-        LOG.info("Imported {} images in {}ms ({} images per second)", n, end-start, n / ((end-start)/1000));
+        LOG.info("Imported {} images in {}ms ({} images per second)", n, end - start, n / ((end - start) / 1000));
     }
 }

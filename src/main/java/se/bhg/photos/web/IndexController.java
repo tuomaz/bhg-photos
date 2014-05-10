@@ -32,11 +32,6 @@ public class IndexController {
     @Autowired
     PhotoService photoSerivce;
 
-    @RequestMapping("/")
-    public String first() {
-        return "index";
-    }
-    
     @RequestMapping("/index")
     public String index() {
         return "index";
@@ -46,16 +41,17 @@ public class IndexController {
     public String upload() {
         return "upload";
     }
-    
+
     @RequestMapping("/login")
     public String login() {
-    	return "login";
+        return "login";
     }
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST, params = "qquuid")
     @ResponseBody
-    public Answer uploadFile(@RequestParam(value = "qquuid", required = true) String uuid, HttpServletRequest request, HttpSession session, HttpServletResponse response, Principal principal,
-            Model model, Locale locale) throws IOException, ServletException {
+    public Answer uploadFile(@RequestParam(value = "qquuid", required = true) final String uuid, final HttpServletRequest request, final HttpSession session, final HttpServletResponse response,
+            final Principal principal,
+            final Model model, final Locale locale) throws IOException, ServletException {
         // from
         // http://skillshared.blogspot.se/2012/08/java-class-for-valums-ajax-file.html
         String filename = null;
@@ -79,7 +75,7 @@ public class IndexController {
                 }
             } else {
                 filename = request.getHeader("X-File-Name");
-                //is = request.getInputStream();
+                // is = request.getInputStream();
                 // TODO take care of this case...
             }
 
@@ -91,7 +87,7 @@ public class IndexController {
         return new Answer(success, id);
     }
 
-    private static final boolean isMultipartContent(HttpServletRequest request) {
+    private static final boolean isMultipartContent(final HttpServletRequest request) {
         String contentType = request.getContentType();
         if (contentType == null) {
             return false;
@@ -105,19 +101,24 @@ public class IndexController {
     public class Answer {
         boolean success;
         String id;
+
         public boolean isSuccess() {
             return success;
         }
-        public void setSuccess(boolean success) {
+
+        public void setSuccess(final boolean success) {
             this.success = success;
         }
+
         public String getId() {
             return id;
         }
-        public void setId(String id) {
+
+        public void setId(final String id) {
             this.id = id;
         }
-        public Answer(boolean s, String i) {
+
+        public Answer(final boolean s, final String i) {
             success = s;
             id = i;
         }

@@ -27,7 +27,7 @@ public class Photo {
         return checksum;
     }
 
-    public void setChecksum(long checksum) {
+    public void setChecksum(final long checksum) {
         this.checksum = checksum;
     }
 
@@ -35,7 +35,7 @@ public class Photo {
         return fileType;
     }
 
-    public void setPhotoType(FileType fileType) {
+    public void setPhotoType(final FileType fileType) {
         this.fileType = fileType;
     }
 
@@ -43,7 +43,7 @@ public class Photo {
         return uploader;
     }
 
-    public void setUploader(String uploader) {
+    public void setUploader(final String uploader) {
         this.uploader = uploader;
     }
 
@@ -51,7 +51,7 @@ public class Photo {
         return metadata;
     }
 
-    public void setMetadata(Metadata metadata) {
+    public void setMetadata(final Metadata metadata) {
         this.metadata = metadata;
     }
 
@@ -59,7 +59,7 @@ public class Photo {
         return fileType;
     }
 
-    public void setFileType(FileType fileType) {
+    public void setFileType(final FileType fileType) {
         this.fileType = fileType;
     }
 
@@ -67,7 +67,7 @@ public class Photo {
         return filename;
     }
 
-    public void setFilename(String filename) {
+    public void setFilename(final String filename) {
         this.filename = filename;
     }
 
@@ -75,7 +75,7 @@ public class Photo {
         return originalFilename;
     }
 
-    public void setOriginalFilename(String originalFilename) {
+    public void setOriginalFilename(final String originalFilename) {
         this.originalFilename = originalFilename;
     }
 
@@ -83,7 +83,7 @@ public class Photo {
         return uploaded;
     }
 
-    public void setUploaded(Date uploaded) {
+    public void setUploaded(final Date uploaded) {
         this.uploaded = uploaded;
     }
 
@@ -91,7 +91,7 @@ public class Photo {
         return shot;
     }
 
-    public void setShot(Date shot) {
+    public void setShot(final Date shot) {
         this.shot = shot;
     }
 
@@ -99,7 +99,7 @@ public class Photo {
         return path;
     }
 
-    public void setPath(String path) {
+    public void setPath(final String path) {
         this.path = path;
     }
 
@@ -107,7 +107,7 @@ public class Photo {
         return id;
     }
 
-    public void setId(ObjectId id) {
+    public void setId(final ObjectId id) {
         this.id = id;
     }
 
@@ -115,39 +115,39 @@ public class Photo {
         return status;
     }
 
-    public void setStatus(PhotoStatus status) {
+    public void setStatus(final PhotoStatus status) {
         this.status = status;
     }
 
-	public int getOldId() {
-		return oldId;
-	}
+    public int getOldId() {
+        return oldId;
+    }
 
-	public void setOldId(int oldId) {
-		this.oldId = oldId;
-	}
+    public void setOldId(final int oldId) {
+        this.oldId = oldId;
+    }
 
-	public int getViews() {
-		return views;
-	}
+    public int getViews() {
+        return views;
+    }
 
-	public void setViews(int views) {
-		this.views = views;
-	}
+    public void setViews(final int views) {
+        this.views = views;
+    }
 
-	public boolean isImported() {
-		return imported;
-	}
+    public boolean isImported() {
+        return imported;
+    }
 
-	public void setImported(boolean imported) {
-		this.imported = imported;
-	}
+    public void setImported(final boolean imported) {
+        this.imported = imported;
+    }
 
-	public String getSha512() {
-		return sha512;
-	}
+    public String getSha512() {
+        return sha512;
+    }
 
-	public void setSha512(String sha512) {
-		this.sha512 = sha512;
-	}
+    public void setSha512(final String sha512) {
+        this.sha512 = sha512;
+    }
 }
