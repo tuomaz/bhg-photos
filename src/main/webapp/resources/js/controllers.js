@@ -6,7 +6,7 @@ var fotonControllers = angular.module('fotonControllers', []);
 
 fotonControllers.controller('AlbumListController', [ '$scope', '$http',
         function($scope, $http) {
-            $http.get('rest/album/list').success(function(data) {
+            $http({method: 'GET', url: 'rest/album/list', cache: true}).success(function(data) {
                 $scope.albums = data;
             });
 
@@ -37,4 +37,10 @@ fotonControllers.controller('AlbumController', [
             $scope.nextSlide = function () {
                 $scope.currentIndex = ($scope.currentIndex > 0) ? --$scope.currentIndex : $scope.album.photos.length - 1;
             };
+
+            $scope.keyPress = function(ev) {
+                alert('KEypress');
+                if (ev.which == 78)
+                  nextSlide();
+              }
         } ]);
