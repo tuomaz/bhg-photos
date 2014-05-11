@@ -31,7 +31,8 @@ import com.drew.imaging.ImageProcessingException;
 @Service
 public class BhgV4ImporterServiceImpl implements BhgV4ImporterService {
     private static final Logger LOG = LoggerFactory.getLogger(BhgV4ImporterServiceImpl.class);
-    private final static String BASE_PATH_V4 = "/Users/frtu01/Documents/bhg/data/old/original";
+    // private final static String BASE_PATH_V4 = "/Users/frtu01/Documents/bhg/data/old/original";
+    private final static String BASE_PATH_V4 = "/home/fredrik/bilder/original";
 
     JdbcTemplate jdbcTemplateImages;
 
