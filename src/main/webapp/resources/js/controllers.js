@@ -30,6 +30,7 @@ fotonControllers.controller('AlbumController', [
             $scope.isCurrentSlideIndex = function(index) {
                 return $scope.currentIndex === index;
             };
+
             $scope.prevSlide = function () {
                 $scope.currentIndex = ($scope.currentIndex < $scope.album.photos.length - 1) ? ++$scope.currentIndex : 0;
             };
@@ -39,8 +40,6 @@ fotonControllers.controller('AlbumController', [
             };
 
             $scope.keyPress = function(ev) {
-                alert('KEypress');
-                if (ev.which == 78)
-                  nextSlide();
-              }
-        } ]);
+                $scope.nextSlide();
+            };
+        }]);

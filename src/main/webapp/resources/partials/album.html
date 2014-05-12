@@ -1,9 +1,9 @@
-{{album.name}}
-    <a class="arrow prev" href="#/album/{{album.id}}" ng-click="nextSlide()">Nästa</a>
-    <a class="arrow next" href="#/album/{{album.id}}" ng-click="prevSlide()">Föregående</a>
+{{album.albumDate | date:'yyyy-MM-dd'}} {{album.name}} ({{album.photos.length}} bilder)
+    <a ng-keypress="keyPress($event)" tabindex="1" class="arrow next" href="#/album/{{album.id}}" ng-click="nextSlide()">Nästa</a>
+    <a class="arrow prev" href="#/album/{{album.id}}" ng-click="prevSlide()">Föregående</a>
     <a class="" href="#/album" ng-click="prevSlide()">Tillbaka till albumlistan</a>
 
-<div ng-keypress="keyPress($event)" tabindex="0" class="container slider">
+<div class="container slider">
     <img ng-repeat="photo in album.photos" class="slide"
         ng-hide="!isCurrentSlideIndex($index)" ng-src="{{'/foton/photo/' + photo.photoIdText + '/600'}}">
         <nav class="nav">
